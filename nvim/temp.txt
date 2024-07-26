@@ -1,0 +1,27 @@
+
+                ["intelephense"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.intelephense.setup {
+                        capabilities = capabilities,
+
+                        cmd = { 'intelephense', '--stdio' };
+
+                        filetypes = { 'php' };
+
+                        root_dir = function(fname)
+                            return vim.loop.cwd()
+                        end;
+
+                        settings = {
+                            intelephense = {
+                                files = {
+                                    maxSize = 1000000;
+                                };
+                                environment = {
+                                    includePaths = {
+                                    }
+                                }
+                            }
+                        }
+                    }
+                end,
