@@ -42,6 +42,10 @@ WORKDIR /home/developer
 # Set zsh as default shell
 RUN sudo chsh -s $(which zsh)
 
+# Copy NVim settings
+COPY ./nvim /home/developer/.config/nvim
+RUN sudo chown -R developer:developer /home/developer/.config
+
 # Install LuaRocks for Lazy.nvim
 RUN sudo apt-get -y --no-install-recommends install lua5.1 liblua5.1
 RUN wget https://luarocks.org/releases/luarocks-3.11.1.tar.gz
@@ -56,6 +60,9 @@ RUN rm -r luarocks-3.11.1
 # Install Oh-My-Zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Start SSH agent, and add keys
+RUN eval `ssh-agent -s`
+RUN ssh-add
+
 CMD ["zsh"]
 
-# docker build -t dev --rm . && docker run --name dev --rm -v "./nvim:/home/developer/.config/nvim" -it dev
